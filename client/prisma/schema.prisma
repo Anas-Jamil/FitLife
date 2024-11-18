@@ -1,0 +1,86 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL") // Replace with your database connection string
+}
+
+model User {
+  id          Int       @id @default(autoincrement())
+  email       String    @unique
+  password    String
+  firstName   String     @map("first_name")
+  lastName    String     @map("last_name")
+  isAdmin     Boolean    @default(false) @map("is_admin")
+  createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
+
+  schedules   Schedule[]
+  mealPlans   MealPlan[]
+  tickets     Ticket[]
+}
+
+model Workout {
+  id          Int       @id @default(autoincrement())
+  exercise    String
+  description String?
+  reps        Int
+  sets        Int
+  createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
+
+  schedules   Schedule[]
+}
+
+model Nutrition {
+  id          Int       @id @default(autoincrement())
+  food        String
+  calories    Decimal
+  proteins    Decimal
+  fats        Decimal
+  carbs       Decimal
+  sugar       Decimal
+  servingSize Decimal    @map("serving_size")
+  createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
+
+  mealPlans   MealPlan[]
+}
+
+model Schedule {
+  id          Int       @id @default(autoincrement())
+  userId      Int
+  workoutId   Int
+  dayOfWeek   String     @map("day_of_week")
+  createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
+
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  workout     Workout    @relation(fields: [workoutId], references: [id], onDelete: Cascade)
+}
+
+model MealPlan {
+  id          Int       @id @default(autoincrement())
+  userId      Int
+  nutritionId Int
+  mealTime    String     @map("meal_time")
+  dayOfWeek   String     @map("day_of_week")
+  createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
+
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  nutrition   Nutrition  @relation(fields: [nutritionId], references: [id], onDelete: Cascade)
+}
+
+model Ticket {
+  id          Int       @id @default(autoincrement())
+  userId      Int
+  title       String
+  description String
+  createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
+
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
