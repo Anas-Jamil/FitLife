@@ -36,7 +36,7 @@ export default function Home() {
               className="mt-4 text-xl sm:text-3xl font-semibold"
               data-aos="fade-up" 
             >
-              The <span className="text-blue-500">ultimate</span> app for fitness and nutrition. Get personalized workout and diet plans tailored to your goals.
+              The <span className="text-blue-500">ultimate</span> app for your health. <br/> Plan workouts, track your diet, and take notes. Empower your journey and achieve your goals with FitLife
             </p>
           </div>
 
