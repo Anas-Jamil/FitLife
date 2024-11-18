@@ -34,7 +34,7 @@ export default function Signup() {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex flex-col items-center justify-start min-h-screen bg-gray-100 pt-5">
     <Link href="/">
       <Image
         src="/logo_transparent.png"
@@ -46,7 +46,7 @@ export default function Signup() {
       />
     </Link>
       <div className="bg-white p-8 rounded-md shadow-md w-11/12 sm:w-3/4 md:w-1/3 lg:w-1/3 xl:w-1/3" data-aos="fade-up">
-        <h1 className="text-2xl font-bold mb-6 text-center text-blue-600">Sign Up</h1>
+        <h1 className="text-2xl font-bold mb-6 text-center text-blue-600">Sign Up!</h1>
         <form onSubmit={handleSignup} className="space-y-4">
           <div>
             <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
@@ -119,6 +119,9 @@ export default function Signup() {
             Log in
           </a>
         </p>
+        <a href="/" className="text-sm text-center text-blue-500 hover:underline block sm:hidden">
+            Home
+        </a>
       </div>
     </div>
   );
