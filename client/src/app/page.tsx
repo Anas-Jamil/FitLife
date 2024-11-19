@@ -106,6 +106,27 @@ export default function Home() {
           >
             <div className="hidden sm:block w-60 h-60 flex-shrink-0">
               <Image
+                src="/notes.svg"
+                width={300}
+                height={300}
+                alt="Illustration of tracking workouts for fitness goals"
+              />
+            </div>
+            <div className="text-center sm:text-left">
+              <p className="text-4xl font-semibold text-blue-500 text-center">Personal Notes</p>
+              <p className="text-2xl mt-2">
+              Effortlessly jot down and organize your fitness notes to stay on top of your goals
+              </p>
+            </div>
+          </div>
+
+          {/* Fact 4 */}
+          <div
+            className="flex flex-col mb-10 sm:flex-row gap-12 items-center sm:items-start sm:mt-16"
+            data-aos="zoom-out" 
+          >
+            <div className="hidden sm:block w-60 h-60 flex-shrink-0">
+              <Image
                 src="/assistance.svg"
                 width={300}
                 height={300}
@@ -119,6 +140,7 @@ export default function Home() {
               </p>
             </div>
           </div>
+
         </div>
       </div>
     </>
