@@ -22,7 +22,7 @@ export default function Home() {
     <>
       <Navbar />
       {/* Main Wrapper */}
-      <div className="min-h-screen bg-gradient-to-br from-white via-blue-100 to-blue-200 scroll-smooth">
+      <div className="min-h-screen bg-gradient-to-br from-gray-200 via-gray-100 to-gray-50 scroll-smooth">
         {/* Hero Section */}
         <MaxWidthWrapper className="h-screen flex flex-col md:flex-row justify-center items-center text-center md:text-left">
           {/* Text Section */}
@@ -42,7 +42,7 @@ export default function Home() {
               journey and achieve your goals with FitLife.
             </p>
             {/* Join Now Button */}
-            <div className="mt-12">
+            <div className="mt-12 flex justify-center md:justify-start">
               <Link href="/signup">
                 <button
                   aria-label="Join Now to start your fitness journey"
@@ -63,12 +63,14 @@ export default function Home() {
               width={500}
               height={300}
               alt="hero page image"
-              className="mx-auto md:ml-0"
+              className="mx-auto md:ml-0 hidden sm:block"
             />
           </div>
         </MaxWidthWrapper>
+        </div>
 
         {/* Facts Section */}
+        <div className="bg-white">
         <div className="flex flex-col gap-20 mt-20 items-center sm:items-center w-full sm:w-full px-4">
           {/* Fact 1 */}
           <div
@@ -144,7 +146,7 @@ export default function Home() {
 
           {/* Fact 4 */}
           <div
-            className="flex flex-col mb-10 sm:flex-row gap-12 items-center sm:items-start sm:mt-16"
+            className="flex flex-col mb-24 sm:flex-row gap-12 items-center sm:items-start sm:mt-16"
             data-aos="zoom-out"
           >
             <div className="hidden sm:block w-60 h-60 flex-shrink-0">
@@ -166,7 +168,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </div>
+        </div>
     </>
   );
 }
