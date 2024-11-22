@@ -5,6 +5,7 @@ import Image from "next/image";
 import AOS from "aos";
 import "aos/dist/aos.css"; 
 import Link from "next/link";
+import { useRouter } from "next/navigation"; // Import the useRouter hook
 
 export default function Signup() {
   const [formData, setFormData] = useState({
@@ -14,15 +15,37 @@ export default function Signup() {
     password: "",
   });
 
+  const router = useRouter(); // Initialize the router
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSignup = (e: React.FormEvent) => {
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form Data Submitted:", formData);
-    alert("Signup form submitted!");
+    try {
+      const response = await fetch("/api/user", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Form Data Submitted:", data);
+        router.push("/signin"); // Redirect to the sign-in page
+      } else {
+        const errorData = await response.json();
+        console.error("Signup failed:", errorData);
+        alert("Signup failed. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      alert("An error occurred. Please try again later.");
+    }
   };
 
   useEffect(() => {
@@ -35,16 +58,16 @@ export default function Signup() {
 
   return (
     <div className="flex flex-col items-center justify-start min-h-screen bg-gray-100 pt-5">
-    <Link href="/">
-      <Image
-        src="/logo_transparent.png"
-        width={200}
-        height={100}
-        alt="Illustration of tracking calories for health and fitness"
-        className="hidden cursor-pointer lg:block "
-        data-aos="fade-down"
-      />
-    </Link>
+      <Link href="/">
+        <Image
+          src="/logo_transparent.png"
+          width={200}
+          height={100}
+          alt="Illustration of tracking calories for health and fitness"
+          className="hidden cursor-pointer lg:block "
+          data-aos="fade-down"
+        />
+      </Link>
       <div className="bg-white p-8 rounded-md shadow-md w-11/12 sm:w-3/4 md:w-1/3 lg:w-1/3 xl:w-1/3" data-aos="fade-up">
         <h1 className="text-2xl font-bold mb-6 text-center text-blue-600">Sign Up!</h1>
         <form onSubmit={handleSignup} className="space-y-4">
@@ -120,7 +143,7 @@ export default function Signup() {
           </a>
         </p>
         <a href="/" className="text-sm text-center text-blue-500 hover:underline block sm:hidden">
-            Home
+          Home
         </a>
       </div>
     </div>
