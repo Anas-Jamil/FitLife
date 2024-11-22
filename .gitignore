@@ -4,6 +4,8 @@ node_modules/
 
 # dependencies
 /node_modules
+
+node_modules
 /.pnp
 .pnp.*
 .yarn/*
