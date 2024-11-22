@@ -34,7 +34,6 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ user: rest, message: "User Created"}, {status: 201});
   } catch(error) {
-    return NextResponse.json({ message: "Something Went Wrong"}, { status: 500})
-
+    return NextResponse.json({ message: "Something Went Wrong"}, { status: 500});
   }
 }

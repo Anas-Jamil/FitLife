@@ -15,7 +15,7 @@ export default function Signup() {
     password: "",
   });
 
-  const router = useRouter(); // Initialize the router
+  const router = useRouter(); 
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -36,7 +36,7 @@ export default function Signup() {
       if (response.ok) {
         const data = await response.json();
         console.log("Form Data Submitted:", data);
-        router.push("/signin"); // Redirect to the sign-in page
+        router.push("/signin"); 
       } else {
         const errorData = await response.json();
         console.error("Signup failed:", errorData);

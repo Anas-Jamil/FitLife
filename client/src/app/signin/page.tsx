@@ -5,28 +5,52 @@ import Image from "next/image";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import Link from "next/link";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function SignIn() {
+  const router = useRouter(); // Declare useRouter at the top level
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSignin = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Form Data Submitted:", formData);
-   
+  const handleSignin = async (e: React.FormEvent) => {
+    e.preventDefault(); // Prevent default form submission
+
+    const { email, password } = formData;
+
+    try {
+      const result = await signIn("credentials", {
+        redirect: false, // Prevent automatic navigation
+        email,
+        password,
+      });
+
+      if (result?.error) {
+        setErrorMessage("Invalid email or password. Please try again.");
+      } else {
+        setErrorMessage("Sign-in successful!");
+        router.push("/frontpage"); // Perform client-side navigation
+      }
+    } catch (error) {
+      console.error("Sign-in error:", error);
+      alert("An unexpected error occurred. Please try again.");
+    }
   };
 
   useEffect(() => {
     AOS.init({
       duration: 1000,
-      once: true, 
+      once: true,
       easing: "ease-in-out",
     });
   }, []);
@@ -52,7 +76,10 @@ export default function SignIn() {
         </h1>
         <form onSubmit={handleSignin} className="space-y-4">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700"
+            >
               Email
             </label>
             <input
@@ -68,7 +95,10 @@ export default function SignIn() {
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700"
+            >
               Password
             </label>
             <input
@@ -90,6 +120,9 @@ export default function SignIn() {
           >
             Sign In
           </button>
+          {errorMessage && (
+          <p className="text-black text-sm mt-2">{errorMessage}</p>
+          )}
         </form>
         <p className="text-sm text-center text-gray-600 mt-4">
           Don't have an account?{" "}
@@ -97,8 +130,11 @@ export default function SignIn() {
             Sign Up
           </Link>
         </p>
-        <Link href="/" className="text-sm text-center text-blue-500 hover:underline block sm:hidden">
-            Home
+        <Link
+          href="/"
+          className="text-sm text-center text-blue-500 hover:underline block sm:hidden"
+        >
+          Home
         </Link>
       </div>
     </div>
