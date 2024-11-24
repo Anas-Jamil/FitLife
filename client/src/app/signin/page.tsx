@@ -7,16 +7,17 @@ import "aos/dist/aos.css";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useToast } from "@/hooks/use-toast";
 
 export default function SignIn() {
   const router = useRouter(); // Declare useRouter at the top level
+  const { toast } = useToast();
 
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
-  const [errorMessage, setErrorMessage] = useState("");
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -36,9 +37,11 @@ export default function SignIn() {
       });
 
       if (result?.error) {
-        setErrorMessage("Invalid email or password. Please try again.");
+        toast({
+          title: "Error",
+          description: "Wrong email or password! Try again!"
+        })
       } else {
-        setErrorMessage("Sign-in successful!");
         router.push("/frontpage"); // Perform client-side navigation
       }
     } catch (error) {
@@ -120,9 +123,6 @@ export default function SignIn() {
           >
             Sign In
           </button>
-          {errorMessage && (
-          <p className="text-black text-sm mt-2">{errorMessage}</p>
-          )}
         </form>
         <p className="text-sm text-center text-gray-600 mt-4">
           Don't have an account?{" "}

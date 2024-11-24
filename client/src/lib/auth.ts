@@ -24,43 +24,60 @@ export const authOptions: NextAuthOptions = {
             password: { label: "Password", type: "password" }
           },
           async authorize(credentials) {
-            if(!credentials?.email || !credentials?.password) {
+            if (!credentials?.email || !credentials?.password) {
               return null;
             }
-              const existingUser = await db.user.findUnique({
-                where: { email: credentials?.email}
-              });
-              if(!existingUser) {
-                return null;
-              }
-
-              const passwordMatch = await compare(credentials.password, existingUser.password);
-
-              if(!passwordMatch){
-                return null;
-              }
-
-              return {
-                id: `${existingUser.id}`,
-                firstName: existingUser.firstName,
-                lastName: existingUser.lastName,
-                email: existingUser.email
-              }
+          
+            // Find user by email (case-insensitive)
+            const existingUser = await db.user.findFirst({
+              where: {
+                email: {
+                  equals: credentials.email, // Compare with input email
+                  mode: "insensitive", // Make it case-insensitive
+                },
+              },
+            });
+          
+            if (!existingUser) {
+              return null;
             }
+          
+            // Compare hashed passwords
+            const passwordMatch = await compare(credentials.password, existingUser.password);
+          
+            if (!passwordMatch) {
+              return null;
+            }
+          
+            return {
+              id: `${existingUser.id}`,
+              firstName: existingUser.firstName,
+              lastName: existingUser.lastName,
+              email: existingUser.email,
+            };
+          }
         })
       ],
       callbacks: {
-        async jwt({ token, user}) {
+        async jwt({ token, user }) {
           if(user){
             return {
               ...token,
-              email: user.email
+              firstName: user.firstName,
+              lastName: user.lastName
             }
           }
           return token
         },
-        async session({ session, user, token}) {
-          return session
+        async session({ session, token }) {
+          return{
+            ...session,
+            user: {
+              ...session.user,
+              firstName: token.firstName,
+              lastName: token.lastName
+            }
+          }
         },
       }
 }

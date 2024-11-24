@@ -1,18 +1,11 @@
-import { Dumbbell, Weight, WeightIcon } from "lucide-react";
-import Image from "next/image";
+import { Dumbbell } from "lucide-react";
 import Link from "next/link";
 
 const Navbar = () => {
     return (
       <nav className="h-14 w-full bg-white sticky top-0 z-50 shadow-md">
-          <div className="max-w-screen-xl mx-auto flex justify-between items-center h-full px-4">
+          <div className="max-w-screen-3xl mx-auto flex justify-between items-center h-full px-4">
           <div className="flex items-center cursor-pointer">
-                {/* <Image
-                    src="/logo_transparent.png"  // Path to the logo inside the 'public' folder
-                    alt="FitLife Logo"
-                    width={120}  // Adjust the width as needed
-                    height={50}  // Adjust the height as needed
-                /> */}
 
             <div className="flex flex-row">
             <Dumbbell className="mt-2 mr-2"/>

@@ -20,7 +20,7 @@ export default function Home() {
 
   return (
     <>
-      <Navbar />
+    <Navbar/>
       {/* Main Wrapper */}
       <div className="min-h-screen bg-gradient-to-br from-gray-200 via-gray-100 to-gray-50 scroll-smooth">
         {/* Hero Section */}
