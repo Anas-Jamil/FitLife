@@ -2,6 +2,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import UserNav from "@/components/UserNav";
 import Sidebar from "@/components/Sidebar";
+import ItemsPage from "@/components/itemWrapper";
 
 export default async function Page() {
   const session = await getServerSession(authOptions);
@@ -24,9 +25,9 @@ export default async function Page() {
             marginLeft: `calc(var(--sidebar-width, 16rem))`, // Dynamically adjusts with the sidebar width
           }}
         >
-          <p>Welcome to your dashboard.</p>
-          </div>
+            <ItemsPage/>
         </div>
       </div>
+    </div>
   );
 }

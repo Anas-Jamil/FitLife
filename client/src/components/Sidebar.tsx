@@ -9,10 +9,10 @@ const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const menuItems = [
-    { icon: <Home />, label: "Home", href: "/" },
-    { icon: <Info />, label: "About", href: "/about" },
-    { icon: <Briefcase />, label: "Services", href: "/services" },
-    { icon: <Mail />, label: "Contact", href: "/contact" },
+    { icon: <Home />, label: "Home", href: "/frontpage" },
+    { icon: <Info />, label: "About", href: "/MealPlan" },
+    { icon: <Briefcase />, label: "Services", href: "/WorkoutPlan" },
+    { icon: <Mail />, label: "Contact", href: "/addWorkout" },
   ];
 
   // Adjust sidebar width dynamically
@@ -49,9 +49,6 @@ const Sidebar = () => {
       <button
         onClick={() => setIsCollapsed(!isCollapsed)}
         className="absolute top-4 right-[-12px] bg-white border border-gray-300 rounded-full shadow-md p-2 text-black font-semibold hover:text-blue-800 hover:shadow-lg transition-transform duration-300"
-        style={{
-          transform: isCollapsed ? "rotate(0deg)" : "rotate(180deg)",
-        }}
       >
         <Menu className="w-6 h-6" />
       </button>
