@@ -42,7 +42,7 @@ FitLife is a full-stack web application designed to help users track their fitne
 
 This project uses a modular directory structure for easy organization:
 
-``plaintext
+```plaintext
 
 FitLife/
 │
@@ -56,7 +56,7 @@ FitLife/
 ├── README.md             # Documentation file
 ├── LICENSE               # License information
 └── .env                  # Environment variables
-
+```
 
 ## Setup and Installation
 
