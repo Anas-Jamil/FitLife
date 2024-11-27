@@ -1,4 +1,4 @@
-"use client"; // This component is client-side
+"use client"; 
 import { useEffect, useState } from "react";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import { Trash } from "lucide-react";
@@ -15,7 +15,7 @@ type MealPlanItem = {
   id: number;
   mealTime: string;
   dayOfWeek: string;
-  grams: number; // Include grams in MealPlanItem
+  grams: number; 
   nutrition: NutritionItem;
 };
 
@@ -28,7 +28,7 @@ export default function MealPlan() {
   const [selectedMealTime, setSelectedMealTime] = useState<string>("Breakfast");
   const [selectedDay, setSelectedDay] = useState<string>("Monday");
   const [currentDate, setCurrentDate] = useState<string>("");
-  const [grams, setGrams] = useState<number>(100); // Default to 100 grams
+  const [grams, setGrams] = useState<number>(100); 
 
   const fetchMealPlans = async () => {
     try {
@@ -37,7 +37,7 @@ export default function MealPlan() {
         throw new Error("Failed to fetch meal plans");
       }
       const data = await response.json();
-      setMealPlans(data.data || []); // Ensure data structure is handled
+      setMealPlans(data.data || []); 
     } catch (error) {
       console.error("Error fetching meal plans:", error);
     } finally {
@@ -52,7 +52,7 @@ export default function MealPlan() {
         throw new Error("Failed to fetch nutrition items");
       }
       const data = await response.json();
-      setNutritionItems(data.data || []); // Ensure data structure is handled
+      setNutritionItems(data.data || []); 
     } catch (error) {
       console.error("Error fetching nutrition items:", error);
     }
@@ -75,17 +75,17 @@ export default function MealPlan() {
           nutritionId: selectedNutritionId,
           mealTime: selectedMealTime,
           dayOfWeek: selectedDay,
-          grams, // Include grams in the request
+          grams, 
         }),
       });
 
       if (response.ok) {
-        await fetchMealPlans(); // Re-fetch meal plans to update the UI
+        await fetchMealPlans(); 
         setIsModalOpen(false);
         setSelectedNutritionId(null);
         setSelectedMealTime("Breakfast");
         setSelectedDay("Monday");
-        setGrams(100); // Reset grams to default
+        setGrams(100); 
       } else {
         throw new Error("Failed to add meal.");
       }
@@ -102,7 +102,7 @@ export default function MealPlan() {
       });
 
       if (response.ok) {
-        // Remove the deleted meal plan from state
+        
         setMealPlans((prev) => prev.filter((meal) => meal.id !== mealId));
       } else {
         throw new Error("Failed to delete meal plan.");
@@ -114,7 +114,7 @@ export default function MealPlan() {
   };
 
   useEffect(() => {
-    // Set the current date on component mount
+    
     const today = new Date();
     const formattedDate = today.toLocaleDateString("en-US", {
       weekday: "long",
@@ -124,7 +124,7 @@ export default function MealPlan() {
     });
     setCurrentDate(formattedDate);
 
-    // Fetch data for meal plans and nutrition items
+    
     fetchMealPlans();
     fetchNutritionItems();
   }, []);
@@ -151,7 +151,7 @@ export default function MealPlan() {
       {/* Accordion */}
       <Accordion type="multiple" defaultValue={["Breakfast", "Lunch", "Dinner"]} className="space-y-4">
         {["Breakfast", "Lunch", "Dinner"].map((mealTime) => {
-          // Calculate total calories for this mealTime
+          
           const totalCalories = mealPlans
             .filter((meal) => meal.mealTime === mealTime)
             .reduce((sum, meal) => sum + (meal.nutrition.calories * meal.grams) / 100, 0);

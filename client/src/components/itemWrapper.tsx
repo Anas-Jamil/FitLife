@@ -41,7 +41,7 @@ export default function ItemsPage() {
         });
       }
 
-      // Update the table data after deletion
+
       setData((prev) => prev.filter((item) => !ids.includes(item.id)));
     } catch (err) {
       console.error("Failed to delete workouts:", err);
@@ -64,7 +64,7 @@ export default function ItemsPage() {
 
       const addedWorkout = await response.json();
 
-      // Update the table data with the new workout
+ 
       setData((prev) => [...prev, addedWorkout.data]);
     } catch (err) {
       console.error("Failed to add workout:", err);

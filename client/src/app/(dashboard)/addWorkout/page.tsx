@@ -3,6 +3,8 @@ import { authOptions } from "@/lib/auth";
 import UserNav from "@/components/UserNav";
 import Sidebar from "@/components/Sidebar";
 import ItemsPage from "@/components/itemWrapper";
+import WorkoutStatsPage from "@/components/workoutStats";
+import MealStatsPage from "@/components/mealStats";
 
 export default async function Page() {
   const session = await getServerSession(authOptions);
@@ -22,10 +24,13 @@ export default async function Page() {
         <div
           className="flex-1 p-4 bg-gray-100 transition-all duration-300"
           style={{
-            marginLeft: `calc(var(--sidebar-width, 16rem))`, // Dynamically adjusts with the sidebar width
+            marginLeft: `calc(var(--sidebar-width, 16rem))`, 
           }}
         >
             <ItemsPage/>
+          
+
+          <WorkoutStatsPage/>
         </div>
       </div>
     </div>

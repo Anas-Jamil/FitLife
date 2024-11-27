@@ -1,6 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
 
-// Define the user type with ticketCount
 export type User = {
   id: number;
   email: string;
@@ -8,10 +7,10 @@ export type User = {
   lastName: string;
   isAdmin: boolean;
   createdAt: string;
-  ticketCount: number; // New field for ticket count
+  ticketCount: number; 
 };
 
-// Define the columns
+
 export const columns: ColumnDef<User>[] = [
   {
     accessorKey: "id",

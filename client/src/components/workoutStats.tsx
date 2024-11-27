@@ -120,7 +120,7 @@ export default function WorkoutStatsPage() {
 
   
   return (
-    <div className="p-6 max-w-3xl">
+    <div className="p-6 max-w-2xl">
       <div className="mb-4">
       </div>
       <div className="bg-white p-4 rounded-lg shadow">

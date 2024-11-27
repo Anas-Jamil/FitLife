@@ -84,7 +84,7 @@ export default function AdminPage() {
   };
 
   if (isLoading) {
-    return<div className="flex items-center justify-center h-screen"><Spinner/></div>;
+    return <div className="flex items-center justify-center h-screen"><Spinner/></div>;
   }
 
   return (

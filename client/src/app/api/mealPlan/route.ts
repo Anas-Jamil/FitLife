@@ -29,7 +29,7 @@ export async function GET(req: Request) {
       },
     });
 
-    // Return the meal plans
+
     return NextResponse.json({
       message: "Meal plans fetched successfully!",
       data: mealPlans,
@@ -56,11 +56,11 @@ export async function POST(req: Request) {
 
     const userId = session.user.id;
 
-    // Parse the request body
+    
     const body = await req.json();
-    const { nutritionId, mealTime, dayOfWeek, grams } = body; // Include grams here
+    const { nutritionId, mealTime, dayOfWeek, grams } = body; 
 
-    // Validate required fields
+  
     if (!nutritionId || !mealTime || !dayOfWeek || !grams) {
       return NextResponse.json(
         { message: "Missing required fields." },
@@ -68,14 +68,14 @@ export async function POST(req: Request) {
       );
     }
 
-    // Create a new meal plan
+    
     const newMealPlan = await prisma.mealPlan.create({
       data: {
         userId: Number(userId), 
         nutritionId: Number(nutritionId), 
         mealTime,
         dayOfWeek,
-        grams: Number(grams), // Ensure grams is converted to a number
+        grams: Number(grams), 
       },
     });
 
