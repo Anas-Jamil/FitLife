@@ -99,7 +99,7 @@ Make sure you have the following installed on your machine:
     - Create a `.env` file in the `src/server` directory and add the following variables:
     
     ```env
-    MONGO_URI=your_mongo_connection_string
+    PRISMA_URL=your_prisma_connection_string
     JWT_SECRET=your_jwt_secret_key
     ```
     
