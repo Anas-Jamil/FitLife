@@ -66,7 +66,7 @@ To get started with FitLife, follow these steps:
 
 Make sure you have the following installed on your machine:
 - [Node.js](https://nodejs.org/en/download/) (v14.x or later)
-- [MongoDB](https://www.mongodb.com/try/download/community) (or use MongoDB Atlas for a cloud database)
+- [Prisma](https://www.mongodb.com/try/download/community](https://www.prisma.io/) 
 - [npm](https://www.npmjs.com/) (Node package manager)
 
 ### Installation
