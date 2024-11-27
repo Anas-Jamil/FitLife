@@ -28,12 +28,12 @@ export const authOptions: NextAuthOptions = {
               return null;
             }
           
-            // Find user by email (case-insensitive)
+            
             const existingUser = await db.user.findFirst({
               where: {
                 email: {
-                  equals: credentials.email, // Compare with input email
-                  mode: "insensitive", // Make it case-insensitive
+                  equals: credentials.email, 
+                  mode: "insensitive", 
                 },
               },
             });
@@ -42,7 +42,7 @@ export const authOptions: NextAuthOptions = {
               return null;
             }
           
-            // Compare hashed passwords
+            
             const passwordMatch = await compare(credentials.password, existingUser.password);
           
             if (!passwordMatch) {
@@ -54,6 +54,7 @@ export const authOptions: NextAuthOptions = {
               firstName: existingUser.firstName,
               lastName: existingUser.lastName,
               email: existingUser.email,
+              isAdmin: existingUser.isAdmin,
             };
           }
         })                                                                                  
@@ -63,6 +64,7 @@ export const authOptions: NextAuthOptions = {
           if(user){
             return {
               ...token,
+              isAdmin: user.isAdmin,
               id: user.id,
               firstName: user.firstName,
               lastName: user.lastName
@@ -75,6 +77,7 @@ export const authOptions: NextAuthOptions = {
             ...session,
             user: {
               ...session.user,
+              isAdmin: token.isAdmin,
               id: token.id,
               firstName: token.firstName,
               lastName: token.lastName

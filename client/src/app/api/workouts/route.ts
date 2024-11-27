@@ -1,13 +1,13 @@
 import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth"; // Adjust the path to your NextAuth config
+import { authOptions } from "@/lib/auth"; 
 
 const prisma = new PrismaClient();
 
 export async function GET(req: Request) {
   try {
-    // Get the user session
+    
     const session = await getServerSession(authOptions);
 
     if (!session || !session.user) {
@@ -16,14 +16,14 @@ export async function GET(req: Request) {
 
     const userId = session.user.id;
 
-    // Fetch the workouts for the logged-in user
+    
     const workouts = await prisma.workout.findMany({
         where: {
-          userId: Number(userId), // Ensure userId is passed as a number
+          userId: Number(userId), 
         },
       });
 
-    // Return the workouts in the response
+    
     return NextResponse.json({
       message: "Workouts fetched successfully",
       data: workouts,
@@ -74,7 +74,7 @@ export async function POST(req: Request) {
       },
     });
 
-    // Respond with the newly created workout
+    
     return NextResponse.json(
       { message: "Workout created successfully", data: newWorkout }
     );
@@ -89,21 +89,21 @@ export async function POST(req: Request) {
 
 export async function DELETE(req: Request) {
   try {
-    // Get the user session
+    
     const session = await getServerSession(authOptions);
 
-    // Check if the user is authenticated
+    
     if (!session || !session.user) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    const userId = session.user.id; // Extract user ID from the session
+    const userId = session.user.id; 
 
-    // Extract the workout ID from the query parameters
+    
     const url = new URL(req.url);
     const workoutId = url.searchParams.get("id");
 
-    // Validate the workout ID
+    
     if (!workoutId) {
       return NextResponse.json(
         { message: "Workout ID is required" },
@@ -111,7 +111,7 @@ export async function DELETE(req: Request) {
       );
     }
 
-    // Ensure the workout belongs to the authenticated user and delete it
+    
     const deletedWorkout = await prisma.workout.deleteMany({
       where: {
         id: Number(workoutId),
@@ -119,7 +119,7 @@ export async function DELETE(req: Request) {
       },
     });
 
-    // Check if any workout was deleted
+    
     if (deletedWorkout.count === 0) {
       return NextResponse.json(
         { message: "Workout not found or not authorized to delete" },
@@ -127,7 +127,7 @@ export async function DELETE(req: Request) {
       );
     }
 
-    // Respond with success
+    
     return NextResponse.json(
       { message: "Workout deleted successfully" }
     );

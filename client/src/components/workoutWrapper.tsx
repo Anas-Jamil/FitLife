@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import { Spinner } from '@/components/ui/spinner';
+import { Trash } from "lucide-react";
+import { Spinner } from "./ui/spinner";
 
 type Workout = {
   id: number;
@@ -43,14 +44,21 @@ async function addToSchedule(workoutId: number, dayOfWeek: string) {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ workoutId, dayOfWeek }), // Correctly use `dayOfWeek`
+    body: JSON.stringify({ workoutId, dayOfWeek }),
   });
-
-  const responseData = await response.json();
-  console.log("API Response:", responseData);
 
   if (!response.ok) {
     throw new Error("Failed to add to schedule.");
+  }
+}
+
+async function deleteFromSchedule(scheduleId: number) {
+  const response = await fetch(`/api/schedule?id=${scheduleId}`, {
+    method: "DELETE",
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to delete from schedule.");
   }
 }
 
@@ -58,15 +66,23 @@ export default function WorkoutPage() {
   const [workouts, setWorkouts] = useState<Workout[]>([]);
   const [schedules, setSchedules] = useState<Schedule[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); 
 
   const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
   useEffect(() => {
     const loadData = async () => {
-      const fetchedWorkouts = await fetchWorkouts();
-      const fetchedSchedules = await fetchSchedules();
-      setWorkouts(fetchedWorkouts);
-      setSchedules(fetchedSchedules);
+      try {
+        setIsLoading(true);
+        const fetchedWorkouts = await fetchWorkouts();
+        const fetchedSchedules = await fetchSchedules();
+        setWorkouts(fetchedWorkouts);
+        setSchedules(fetchedSchedules);
+      } catch (error) {
+        console.error("Error loading data:", error);
+      } finally {
+        setIsLoading(false);
+      }
     };
 
     loadData();
@@ -75,21 +91,59 @@ export default function WorkoutPage() {
   const getWorkoutsForDay = (day: string) => {
     return schedules
       .filter((schedule) => schedule.dayOfWeek === day)
-      .map((schedule) => workouts.find((workout) => workout.id === schedule.workoutId))
-      .filter(Boolean) as Workout[];
+      .map((schedule) => ({
+        ...workouts.find((workout) => workout.id === schedule.workoutId),
+        scheduleId: schedule.id,
+      }))
+      .filter(Boolean) as (Workout & { scheduleId: number })[];
   };
+
+  const handleDelete = async (scheduleId: number) => {
+    try {
+      setIsLoading(true); 
+      await deleteFromSchedule(scheduleId);
+      setSchedules((prev) => prev.filter((schedule) => schedule.id !== scheduleId));
+    } catch (error) {
+      console.error("Error deleting schedule:", error);
+      alert("Failed to delete schedule. Please try again.");
+    } finally {
+      setIsLoading(false); 
+    }
+  };
+
+  const handleAddToSchedule = async (workoutId: number, dayOfWeek: string) => {
+    try {
+      setIsLoading(true);
+      await addToSchedule(workoutId, dayOfWeek);
+      const updatedSchedules = await fetchSchedules();
+      setSchedules(updatedSchedules);
+      setIsModalOpen(false);
+    } catch (error) {
+      console.error("Error adding to schedule:", error);
+      alert("Failed to add to schedule. Please try again.");
+    } finally {
+      setIsLoading(false); 
+    }
+  };
+
+  if (isLoading) {
+
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Spinner/>
+      </div>
+    );
+  }
 
   return (
     <div>
       {/* Weekly Schedule Accordion Section */}
       <h1 className="text-2xl font-bold mb-4">Your Schedule</h1>
       <div className="mt-6">
-   
-          <Button onClick={() => setIsModalOpen(true)} className="bg-blue-500 hover:bg-blue-600">
-            + Add to Schedule
-          </Button>
-       
-        <Accordion type="multiple" defaultValue={["Monday", "Tuesday"]} className="space-y-4">
+        <Button onClick={() => setIsModalOpen(true)} className="bg-blue-500 hover:bg-blue-600">
+          + Add to Schedule
+        </Button>
+        <Accordion type="multiple" defaultValue={["Monday", "Tuesday", "Wednesday", "Thursday"]} className="space-y-4">
           {daysOfWeek.map((day) => {
             const dayWorkouts = getWorkoutsForDay(day);
 
@@ -105,7 +159,7 @@ export default function WorkoutPage() {
                   {dayWorkouts.length > 0 ? (
                     dayWorkouts.map((workout) => (
                       <div
-                        key={workout.id}
+                        key={workout.scheduleId}
                         className="p-4 bg-gray-200 border rounded-lg shadow-sm mb-2 relative"
                       >
                         <div>
@@ -113,6 +167,15 @@ export default function WorkoutPage() {
                           <p className="text-sm text-gray-600">Description: {workout.description}</p>
                           <p className="text-sm text-gray-600">Reps: {workout.reps}</p>
                           <p className="text-sm text-gray-600">Sets: {workout.sets}</p>
+                        </div>
+                        {/* Trash Icon */}
+                        <div className="absolute top-4 right-4">
+                          <button
+                            onClick={() => handleDelete(workout.scheduleId)}
+                            className="hover:text-red-500 transition"
+                          >
+                            <Trash size={19} />
+                          </button>
                         </div>
                       </div>
                     ))
@@ -137,11 +200,7 @@ export default function WorkoutPage() {
                 const workoutId = parseInt((e.target as any).workoutId.value);
                 const dayOfWeek = (e.target as any).dayOfWeek.value;
 
-                await addToSchedule(workoutId, dayOfWeek);
-
-                const updatedSchedules = await fetchSchedules();
-                setSchedules(updatedSchedules);
-                setIsModalOpen(false);
+                await handleAddToSchedule(workoutId, dayOfWeek);
               }}
             >
               <div className="mb-4">

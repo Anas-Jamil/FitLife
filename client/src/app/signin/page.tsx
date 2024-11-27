@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 
 export default function SignIn() {
-  const router = useRouter(); // Declare useRouter at the top level
+  const router = useRouter(); 
   const { toast } = useToast();
 
   const [formData, setFormData] = useState({
@@ -25,13 +25,13 @@ export default function SignIn() {
   };
 
   const handleSignin = async (e: React.FormEvent) => {
-    e.preventDefault(); // Prevent default form submission
+    e.preventDefault(); 
 
     const { email, password } = formData;
 
     try {
       const result = await signIn("credentials", {
-        redirect: false, // Prevent automatic navigation
+        redirect: false, 
         email,
         password,
       });
@@ -42,7 +42,7 @@ export default function SignIn() {
           description: "Wrong email or password! Try again!"
         })
       } else {
-        router.push("/frontpage"); // Perform client-side navigation
+        router.push("/MealPlan"); 
       }
     } catch (error) {
       console.error("Sign-in error:", error);

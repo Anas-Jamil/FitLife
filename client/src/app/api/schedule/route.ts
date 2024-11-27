@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth"; // Adjust the path to your NextAuth config
+import { authOptions } from "@/lib/auth"; 
 
 const prisma = new PrismaClient();
 
@@ -15,10 +15,10 @@ export async function GET(req: Request) {
 
     const userId = session.user.id;
 
-    // Fetch the schedules for the logged-in user
+    
     const schedules = await prisma.schedule.findMany({
       where: {
-        userId: Number(userId), // Ensure userId is passed as a number
+        userId: Number(userId), 
       },
       include: {
         workout: true, 

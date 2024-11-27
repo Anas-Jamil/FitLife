@@ -3,6 +3,7 @@
 import { DataTable } from "@/components/ui/data-table";
 import { columns, Workout } from "@/components/ui/columns";
 import { useState, useEffect } from "react";
+import { Spinner } from "./ui/spinner";
 
 async function fetchData(): Promise<Workout[]> {
   try {
@@ -69,6 +70,8 @@ export default function ItemsPage() {
       console.error("Failed to add workout:", err);
     }
   };
+
+ 
 
   return (
     <div>

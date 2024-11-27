@@ -31,7 +31,7 @@ export default function AddToScheduleModal({
 
     await onAddToSchedule(selectedWorkoutId, selectedDay);
 
-    // Reset modal inputs
+    
     setSelectedWorkoutId(null);
     setSelectedDay("Monday");
     onClose();

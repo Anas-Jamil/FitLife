@@ -2,7 +2,8 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import UserNav from "@/components/UserNav";
 import Sidebar from "@/components/Sidebar";
-import MealPlan from "@/components/mealPlanWrapper"; 
+import MealPlan from "@/components/ticketWrapper"; 
+import TicketWrapper from "@/components/ticketWrapper";
 
 export default async function Page() {
   const session = await getServerSession(authOptions);
@@ -25,7 +26,7 @@ export default async function Page() {
             marginLeft: `calc(var(--sidebar-width, 16rem))`, 
           }}
         >
-          <MealPlan />
+        <TicketWrapper/>
         </div>
       </div>
     </div>

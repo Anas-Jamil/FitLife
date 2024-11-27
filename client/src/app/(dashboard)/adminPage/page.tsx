@@ -2,11 +2,12 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import UserNav from "@/components/UserNav";
 import Sidebar from "@/components/Sidebar";
+import AdminPage from "@/components/adminWrapper";
 
 export default async function Page() {
   const session = await getServerSession(authOptions);
 
-  if (!session?.user) {
+  if (!session?.user.isAdmin) {
     return <meta httpEquiv="refresh" content="0; url=/signin" />;
   }
 
@@ -21,12 +22,12 @@ export default async function Page() {
         <div
           className="flex-1 p-4 bg-gray-100 transition-all duration-300"
           style={{
-            marginLeft: `calc(var(--sidebar-width, 16rem))`, // Dynamically adjusts with the sidebar width
+            marginLeft: `calc(var(--sidebar-width, 16rem))`, 
           }}
         >
-          <p>Welcome to your dashboard.</p>
-          </div>
+          <AdminPage/>
         </div>
       </div>
+    </div>
   );
 }

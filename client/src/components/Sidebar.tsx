@@ -1,28 +1,28 @@
 "use client";
 
-import { Home, Info, Briefcase, Mail, Menu, LogOut } from "lucide-react";
-import Link from "next/link"; // Import Next.js Link
+import { Home, Menu, LogOut, CookingPot, Calendar, Archive, Info } from "lucide-react";
+import Link from "next/link"; 
 import { useState, useEffect } from "react";
-import { signOut } from "next-auth/react"; // Import signOut from next-auth
+import { signOut } from "next-auth/react"; 
 
 const Sidebar = () => {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(true);
 
   const menuItems = [
-    { icon: <Home />, label: "Home", href: "/frontpage" },
-    { icon: <Info />, label: "About", href: "/MealPlan" },
-    { icon: <Briefcase />, label: "Services", href: "/WorkoutPlan" },
-    { icon: <Mail />, label: "Contact", href: "/addWorkout" },
+    { icon: <CookingPot />, label: "Meal Plan", href: "/MealPlan" },
+    { icon: <Calendar />, label: "Schedule", href: "/WorkoutPlan" },
+    { icon: <Archive />, label: "Workouts", href: "/addWorkout" },
+    { icon: <Info />, label: "Contact Us", href: "/tickets" },
   ];
 
-  // Adjust sidebar width dynamically
+  
   const sidebarWidth = isCollapsed ? "4rem" : "16rem";
   useEffect(() => {
-    // Set CSS variable for dynamic width
+    
     document.documentElement.style.setProperty("--sidebar-width", sidebarWidth);
   }, [sidebarWidth]);
 
-  // Auto-collapse sidebar on small devices
+  
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth <= 768) {
@@ -30,13 +30,13 @@ const Sidebar = () => {
       }
     };
 
-    // Initial check
+    
     handleResize();
 
-    // Add resize event listener
+    
     window.addEventListener("resize", handleResize);
 
-    // Cleanup event listener on component unmount
+    
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
@@ -71,7 +71,7 @@ const Sidebar = () => {
       {/* Logout Button */}
       <button
         className="mb-4 flex items-center w-full px-4 py-2 space-x-4 text-black hover:bg-red-100 transition-colors duration-200"
-        onClick={() => signOut({ callbackUrl: "/" })} // Redirects to home after signing out
+        onClick={() => signOut({ callbackUrl: "/" })} 
       >
         <LogOut className="w-6 h-6" />
         {!isCollapsed && <span className="font-semibold">Logout</span>}

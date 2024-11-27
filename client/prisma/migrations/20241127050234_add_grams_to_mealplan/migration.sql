@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "MealPlan" ADD COLUMN     "grams" DECIMAL(65,30) NOT NULL DEFAULT 100;

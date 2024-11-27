@@ -8,7 +8,7 @@ export async function POST(req: Request) {
     const body = await req.json();
     const { email, password, firstName, lastName } = body;
 
-    // check if email exists
+    
 
     const existingUserByEmail= await db.user.findUnique({
       where: { email: email}
@@ -28,7 +28,7 @@ export async function POST(req: Request) {
       }
     })
 
-    // ensures password is not returned with the post request
+    
     const { password: newUserPassword, ...rest } = newUser;
 
 

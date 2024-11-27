@@ -5,7 +5,7 @@ import Image from "next/image";
 import AOS from "aos";
 import "aos/dist/aos.css"; 
 import Link from "next/link";
-import { useRouter } from "next/navigation"; // Import the useRouter hook
+import { useRouter } from "next/navigation"; 
 
 export default function Signup() {
   const [formData, setFormData] = useState({

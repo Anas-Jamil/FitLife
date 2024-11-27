@@ -1,8 +1,8 @@
 "use client"; // This component is client-side
 import { useEffect, useState } from "react";
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion"; // Adjust the import path based on your project structure
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import { Trash } from "lucide-react";
-import { Spinner } from '@/components/ui/spinner';
+import { Spinner } from "@/components/ui/spinner";
 
 type NutritionItem = {
   id: number;
@@ -15,6 +15,7 @@ type MealPlanItem = {
   id: number;
   mealTime: string;
   dayOfWeek: string;
+  grams: number; // Include grams in MealPlanItem
   nutrition: NutritionItem;
 };
 
@@ -27,6 +28,7 @@ export default function MealPlan() {
   const [selectedMealTime, setSelectedMealTime] = useState<string>("Breakfast");
   const [selectedDay, setSelectedDay] = useState<string>("Monday");
   const [currentDate, setCurrentDate] = useState<string>("");
+  const [grams, setGrams] = useState<number>(100); // Default to 100 grams
 
   const fetchMealPlans = async () => {
     try {
@@ -73,6 +75,7 @@ export default function MealPlan() {
           nutritionId: selectedNutritionId,
           mealTime: selectedMealTime,
           dayOfWeek: selectedDay,
+          grams, // Include grams in the request
         }),
       });
 
@@ -82,6 +85,7 @@ export default function MealPlan() {
         setSelectedNutritionId(null);
         setSelectedMealTime("Breakfast");
         setSelectedDay("Monday");
+        setGrams(100); // Reset grams to default
       } else {
         throw new Error("Failed to add meal.");
       }
@@ -126,7 +130,7 @@ export default function MealPlan() {
   }, []);
 
   if (loading) {
-    return <div><Spinner/></div>;
+    return <div className="flex items-center justify-center h-screen"><Spinner /></div>;
   }
 
   return (
@@ -150,14 +154,14 @@ export default function MealPlan() {
           // Calculate total calories for this mealTime
           const totalCalories = mealPlans
             .filter((meal) => meal.mealTime === mealTime)
-            .reduce((sum, meal) => sum + Number(meal.nutrition.calories || 0), 0);
+            .reduce((sum, meal) => sum + (meal.nutrition.calories * meal.grams) / 100, 0);
 
           return (
             <AccordionItem key={mealTime} value={mealTime}>
               <AccordionTrigger>
                 {mealTime}{" "}
                 <span className="text-gray-600 text-sm font-normal">
-                  Total Calories: {totalCalories}
+                  Total Calories: {totalCalories.toFixed(2)}
                 </span>
               </AccordionTrigger>
               <AccordionContent>
@@ -172,10 +176,10 @@ export default function MealPlan() {
                       <div>
                         <p className="font-semibold">{meal.nutrition.food}</p>
                         <p className="text-sm text-gray-600">
-                          Calories: {meal.nutrition.calories}
+                          Calories: {(meal.nutrition.calories * meal.grams / 100).toFixed(2)}
                         </p>
                         <p className="text-sm text-gray-600">
-                          Protein: {meal.nutrition.proteins}
+                          Protein: {(meal.nutrition.proteins * meal.grams / 100).toFixed(2)}
                         </p>
                         <p className="text-sm text-gray-600">Day: {meal.dayOfWeek}</p>
                       </div>
@@ -219,10 +223,26 @@ export default function MealPlan() {
                   </option>
                   {nutritionItems.map((item) => (
                     <option key={item.id} value={item.id}>
-                      {item.food} ({item.calories} kcal)
+                      {item.food} ({item.calories ? Number(item.calories).toFixed(2) : "0.00"} kcal)
                     </option>
                   ))}
                 </select>
+              </div>
+
+              {/* Grams Input */}
+              <div className="mb-4">
+                <label htmlFor="grams" className="block text-sm font-semibold mb-2">
+                  Grams:
+                </label>
+                <input
+                  type="number"
+                  id="grams"
+                  value={grams}
+                  onChange={(e) => setGrams(Number(e.target.value) || 100)}
+                  className="w-full px-3 py-2 border rounded-lg"
+                  min="1"
+                  placeholder="Enter grams"
+                />
               </div>
 
               {/* Select Meal Time */}

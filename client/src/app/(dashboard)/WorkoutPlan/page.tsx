@@ -22,7 +22,7 @@ export default async function Page() {
         <div
           className="flex-1 p-4 bg-gray-100 transition-all duration-300"
           style={{
-            marginLeft: `calc(var(--sidebar-width, 16rem))`, // Dynamically adjusts with the sidebar width
+            marginLeft: `calc(var(--sidebar-width, 16rem))`, 
           }}
         >
           <WorkoutPage/>

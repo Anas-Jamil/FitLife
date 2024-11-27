@@ -45,7 +45,6 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   try {
- 
     const session = await getServerSession(authOptions);
 
     if (!session || !session.user) {
@@ -55,30 +54,30 @@ export async function POST(req: Request) {
       );
     }
 
-    const userId = session.user.id; 
+    const userId = session.user.id;
 
-
+    // Parse the request body
     const body = await req.json();
-    const { nutritionId, mealTime, dayOfWeek } = body;
+    const { nutritionId, mealTime, dayOfWeek, grams } = body; // Include grams here
 
-
-    if (!nutritionId || !mealTime || !dayOfWeek) {
+    // Validate required fields
+    if (!nutritionId || !mealTime || !dayOfWeek || !grams) {
       return NextResponse.json(
         { message: "Missing required fields." },
         { status: 400 }
       );
     }
 
-
+    // Create a new meal plan
     const newMealPlan = await prisma.mealPlan.create({
       data: {
         userId: Number(userId), 
         nutritionId: Number(nutritionId), 
         mealTime,
         dayOfWeek,
+        grams: Number(grams), // Ensure grams is converted to a number
       },
     });
-
 
     return NextResponse.json({
       message: "Meal plan added successfully!",
@@ -92,6 +91,7 @@ export async function POST(req: Request) {
     );
   }
 }
+
 
 export async function DELETE(req: Request) {
   try {
